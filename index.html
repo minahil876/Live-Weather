@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather app</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <h1>Welcome To Live Weather Api </h1>
+    <main>
+    <div class="card">
+        <form action="" id="weatherForm">
+            <div class="search">
+                <input type="text" placeholder="Enter City Name" spellcheck="false" id="search">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </form>
+        <div class="weather" id="weatherInfo">
+            <img src="img/wind1.png" class="weather-icon">
+            <h1 class="temp" id="temp">22°C</h1>
+            <h2 class="city" id="city">Lahore</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="img/cloud.png">
+                    <div>
+                        <p class="humidity" id="hum">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="img/wind (2).png">
+                    <div>
+                        <p class="wind" id="win">15km/h</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+    <script>
+        const API_KEY = "2bef726af934496e0b7933e038ded080";
+        const form = document.querySelector("#weatherForm");
+        const search = document.querySelector("#search");
+        const weatherInfo = document.querySelector("#weatherInfo");
+
+        const getWeather = async (city) => {
+            try {
+                const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                updateWeather(data);
+            } catch (error) {
+                console.error("Error fetching weather data:", error);
+            }
+        };
+
+        const updateWeather = (data) => {
+        document.getElementById('temp').innerHTML=data.main.temp;
+        document.getElementById('hum').innerHTML=data.main.humidity;
+        document.getElementById('win').innerHTML=data.wind.speed;
+        document.getElementById('city').innerHTML=data.name;
+           
+        };
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            getWeather(search.value);
+        });
+    </script>
+</body>
+</html>
